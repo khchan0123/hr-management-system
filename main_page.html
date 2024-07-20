@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR code Generator</title>
+  <?!= HtmlService.createHtmlOutputFromFile('mainpage_css').getContent() ?>
+
+
+</head>
+
+
+<body>
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+  <div class="container">
+    <div class="navigation">
+      <ul>
+        <li>
+          <a href="#">
+
+            <span class="title">login name</span>
+          </a>
+        </li>
+
+        <li>
+          <a href="#">
+            <span class="icon">
+              <ion-icon name="home"></ion-icon>
+            </span>
+            <span class="title">Home</span>
+          </a>
+        </li>
+
+        <li>
+          <a href="#">
+            <span class="icon">
+             <ion-icon name="people-outline"></ion-icon>
+            </span>
+            <span class="title">Employee Management</span>
+          </a>
+        </li>
+
+        <li>
+          <a href="#">
+            <span class="icon">
+             <ion-icon name="calendar-outline"></ion-icon>
+            </span>
+            <span class="title">Leave Management</span>
+          </a>
+        </li>
+
+        <li>
+          <a href="#">
+            <span class="icon">
+             <ion-icon name="file-tray-full-outline"></ion-icon>
+            </span>
+            <span class="title">Report</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="main">
+      <div class="topbar">
+        <div class="toggle">
+          <ion-icon name="menu-outline"></ion-icon>
+        </div>
+
+
+      </div>
+
+      <div class="cardBox">
+        <div class="card">
+          <div>
+            <div class="numbers">1,504</div>
+            <div class="cardName">Total-CheckIn</div>
+          </div>
+
+          <div class="iconBx">
+            <ion-icon name="eye-outline"></ion-icon>
+          </div>
+        </div>
+
+        <div class="card">
+          <div>
+            <div class="numbers">80</div>
+            <div class="cardName">Total-Leave</div>
+          </div>
+
+          <div class="iconBx">
+            <ion-icon name="cart-outline"></ion-icon>
+          </div>
+        </div>
+
+        <div class="card">
+          <div>
+            <div class="numbers">284</div>
+            <div class="cardName">Leave Awaiting List</div>
+          </div>
+
+          <div class="iconBx">
+            <ion-icon name="chatbubbles-outline"></ion-icon>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div class="details">
+        <div class="recentOrders">
+          <div class="cardHeader">
+            <h2>Attendance Overview</h2>
+            <a href="#" class="btn">View All</a>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <td>Department</td>
+                <td>Total Employee</td>
+                <td>Total Attendants</td>
+                <td>Status</td>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>Finance</td>
+                <td>20</td>
+                <td>20</td>
+                <td><span class="status delivered">100%</span></td>
+              </tr>
+
+              <tr>
+                <td>IT department</td>
+                <td>20</td>
+                <td>16</td>
+                <td><span class="status pending">80%</span></td>
+              </tr>
+
+              <tr>
+                <td>Human Resource</td>
+                <td>10</td>
+                <td>5</td>
+                <td><span class="status return">50%</span></td>
+              </tr>
+
+              <tr>
+                <td>Human Resource</td>
+                <td>10</td>
+                <td>5</td>
+                <td><span class="status return">50%</span></td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="recentCustomers">
+          <div class="cardHeader">
+            <h2>Recent Applied Leave</h2>
+          </div>
+
+          <table>
+            <tr>
+              <td width="60px">
+                <div class="imgBx"><img src="https://images.generated.photos/zQ0hBGUJIrKhFLAupgQS2DCvznVa81enAlKA0xN_aEI/rs:fit:512:512/wm:0.95:sowe:18:18:0.33/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LnBob3Rvcy92M18w/ODUwMDk3LmpwZw.jpg" alt="">
+                </div>
+              </td>
+              <td>
+                <h4>David <br> <span>8.58am 20/7/2024</span></h4>
+              </td>
+            </tr>
+
+            <tr>
+              <td width="60px">
+                <div class="imgBx"><img src="https://cdn.bio.link/uploads/profile_pictures/2023-06-15/etVNEktTBAHeqr3VCEzEkgYUuPMSmigA.png" alt="">
+                </div>
+              </td>
+              <td>
+                <h4>Rameez <br> <span>9.58am 20/7/2024</span></h4>
+              </td>
+            </tr>
+
+            <tr>
+              <td width="60px">
+                <div class="imgBx"><img src="https://images.generated.photos/zQ0hBGUJIrKhFLAupgQS2DCvznVa81enAlKA0xN_aEI/rs:fit:512:512/wm:0.95:sowe:18:18:0.33/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LnBob3Rvcy92M18w/ODUwMDk3LmpwZw.jpg" alt="">
+                </div>
+              </td>
+              <td>
+                <h4>David <br> <span>10.20am 20/7/2024</span></h4>
+              </td>
+            </tr>
+
+            <tr>
+              <td width="60px">
+                <div class="imgBx"><img src="https://images.generated.photos/zQ0hBGUJIrKhFLAupgQS2DCvznVa81enAlKA0xN_aEI/rs:fit:512:512/wm:0.95:sowe:18:18:0.33/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LnBob3Rvcy92M18w/ODUwMDk3LmpwZw.jpg" alt="">
+                </div>
+              </td>
+              <td>
+                <h4>David <br> <span>10.20am 20/7/2024</span></h4>
+              </td>
+            </tr>
+
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <?!= HtmlService.createHtmlOutputFromFile("js").getContent() ?>
+
+</body>
+
+</html>
