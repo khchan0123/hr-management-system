@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <script>
+    // Function to link the webpage to a specific Google Spreadsheet
+    function linkToSpreadsheet() {
+      const spreadsheetId = '1qQFFj7iRi4AFJsOKc1xpKbrenitmPD4Evi-cvgmm3UA'; // Your spreadsheet ID
+      google.script.run.withSuccessHandler(onSpreadsheetLinkSuccess).linkToSpreadsheet(spreadsheetId);
+    }
+
+    function onSpreadsheetLinkSuccess(response) {
+      if (response.success) {
+        console.log('Spreadsheet linked successfully.');
+        // You can add additional actions here, e.g., populate a table with data from the spreadsheet
+      } else {
+        console.error('Error linking spreadsheet: ' + response.message);
+      }
+    }
+
+    // Call the function when the script is loaded
+    document.addEventListener('DOMContentLoaded', linkToSpreadsheet);
+
+     function populateDepartments(departments) {
+      const departmentSelect = document.getElementById('department');
+      departments.forEach(department => {
+        const option = document.createElement('option');
+        option.value = department;
+        option.text = department;
+        departmentSelect.add(option);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      google.script.run.withSuccessHandler(populateDepartments).getDepartments();
+    });
+
+    function generateReport() {
+      const reportType = document.getElementById('reportType').value;
+      const department = document.getElementById('department').value;
+      
+      google.script.run.withSuccessHandler(function(data) {
+        displayReport(data, department, reportType);
+      }).generateReport(reportType, department);
+    }
+
+    function displayReport(data, department, reportType) {
+      // Update the report heading
+      const departmentText = department === 'all' ? 'All Departments' : department;
+      document.getElementById('reportHeading').innerText = `${reportType === 'employee_demographics' ? 'Employee Demographics Report' : 'Departmental Headcount and Turnover Report'}: ${departmentText}`;
+
+      // Clear existing charts
+      document.getElementById('reportContent').innerHTML = `
+        <canvas id="genderChart" width="400" height="200"></canvas>
+        <canvas id="ageChart" width="400" height="200"></canvas>
+        <canvas id="nationalityChart" width="400" height="200"></canvas>
+        <canvas id="educationChart" width="400" height="200"></canvas>
+        <canvas id="turnoverChart" width="400" height="200"></canvas>
+      `;
+      
+      if (reportType === 'employee_demographics') {
+        // Gender Chart
+        const genderCtx = document.getElementById('genderChart').getContext('2d');
+        new Chart(genderCtx, {
+          type: 'bar',
+          data: {
+            labels: data.gender.labels,
+            datasets: [{
+              label: 'Gender Distribution',
+              data: data.gender.values,
+              backgroundColor: 'rgba(54, 162, 235, 0.2)',
+              borderColor: 'rgba(54, 162, 235, 1)',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+
+        // Age Chart
+        const ageCtx = document.getElementById('ageChart').getContext('2d');
+        new Chart(ageCtx, {
+          type: 'bar',
+          data: {
+            labels: data.age.labels,
+            datasets: [{
+              label: 'Age Distribution',
+              data: data.age.values,
+              backgroundColor: 'rgba(75, 192, 192, 0.2)',
+              borderColor: 'rgba(75, 192, 192, 1)',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+
+        // Nationality Chart
+        const nationalityCtx = document.getElementById('nationalityChart').getContext('2d');
+        new Chart(nationalityCtx, {
+          type: 'bar',
+          data: {
+            labels: data.nationality.labels,
+            datasets: [{
+              label: 'Nationality Distribution',
+              data: data.nationality.values,
+              backgroundColor: 'rgba(255, 206, 86, 0.2)',
+              borderColor: 'rgba(255, 206, 86, 1)',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+
+        // Education Chart
+        const educationCtx = document.getElementById('educationChart').getContext('2d');
+        new Chart(educationCtx, {
+          type: 'bar',
+          data: {
+            labels: data.education.labels,
+            datasets: [{
+              label: 'Education Qualification Distribution',
+              data: data.education.values,
+              backgroundColor: 'rgba(153, 102, 255, 0.2)',
+              borderColor: 'rgba(153, 102, 255, 1)',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+      } else if (reportType === 'departmental_headcount_turnover') {
+        // Turnover Chart
+        const turnoverCtx = document.getElementById('turnoverChart').getContext('2d');
+        new Chart(turnoverCtx, {
+          type: 'bar',
+          data: {
+            labels: data.turnover.labels,
+            datasets: [{
+              label: 'Turnover Rate',
+              data: data.turnover.values,
+              backgroundColor: 'rgba(255, 99, 132, 0.2)',
+              borderColor: 'rgba(255, 99, 132, 1)',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+      }
+    }
+  </script>
+</head>
+<body>
+  <!-- This file handles backend JavaScript functions for the report.html -->
+</body>
+</html>

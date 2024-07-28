@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>mainpage</title>
+  <?!= HtmlService.createHtmlOutputFromFile('mainpage_css').getContent() ?>
+  <?!= HtmlService.createHtmlOutputFromFile('leave_management_css').getContent() ?>
+</head>
+
+<body>
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+  <div class="container">
+    <div class="navigation">
+      {{NAVBAR}}
+    </div>
+
+    <div class="main">
+      <div class="topbar">
+        <div class="toggle">
+          <ion-icon name="menu-outline"></ion-icon>
+        </div>
+      </div>
+      <div class="cardBox">
+        <div class="card">
+          <div>
+            <div class="numbers">80</div>
+            <div class="cardName">Total-Leave</div>
+          </div>
+
+          <div class="iconBx">
+            <ion-icon name="cart-outline"></ion-icon>
+          </div>
+        </div>
+
+        <div class="card">
+          <div>
+            <div class="numbers">284</div>
+            <div class="cardName">Leave Awaiting List</div>
+          </div>
+
+          <div class="iconBx">
+            <ion-icon name="chatbubbles-outline"></ion-icon>
+          </div>
+        </div>
+      </div>
+
+      <div class="leave_table">
+        <div class="recentOrders">
+          <div class="cardHeader">
+            <h2>Employee Leave Overview</h2>
+          </div>
+
+          <table id="data-table">
+            <thead>
+              <tr>
+                <td>Name</td>
+                <td>Department</td>
+                <td>Leave Type</td>
+                <td>From Date</td>
+                <td>To Date</td>
+                <td>Leave Days</td>
+                <td>Reason</td>
+                <td>Status</td>
+                <td>Action</td>
+              </tr>
+            </thead>
+
+            <tbody>
+              <? var tableData = getLeaveData(); ?>
+              <? for (var i = 0; i < tableData.length; i++) { ?>
+              <tr>
+                <? for (var j = 0; j < tableData[i].length; j++) { ?>
+                <td class="<?= j == 7 ? 'status-' + tableData[i][j].toLowerCase() : '' ?>">
+                  <?= tableData[i][j] ?>
+                </td>
+                <? } ?>
+                <td class="action-column">
+                  <a href="#" class="btn-approve" data-row="<?= i ?>" data-status="Approved">Approve</a>
+                  <br>
+                  <br>
+                  <a href="#" class="btn-disapprove" data-row="<?= i ?>" data-status="Declined">Decline</a>
+                </td>
+              </tr>
+              <? } ?>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <script src="js.js"></script>
+      <?!= HtmlService.createHtmlOutputFromFile("js").getContent() ?>
+    </div>
+  </div>
+
+
+  <div id="approveModal" class="modal">
+    <div class="modal-content">
+      <p>Do you really want to approve this leave?</p>
+      <br>
+      <button id="confirmApprove" class="btn-yes">Yes</button>
+      <button class="btn-disapprove close">No</button>
+    </div>
+  </div>
+
+  <div id="declineModal" class="modal">
+    <div class="modal-content">
+      <p>Please enter the reason for declining the leave:</p>
+      <input type="text" id="declineReason" placeholder="Reason">
+      <br>
+      <button id="confirmDecline" class="btn-submit">Submit</button>
+      <button class="btn-disapprove close">Cancel</button>
+    </div>
+  </div>
+
+  <div id="confirmationModal" class="modal">
+    <div class="modal-content">
+      <p>The leave has been approved.</p>
+      <br>
+      <button id="closeConfirmation" class="btn-confirmation">Close</button>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+      var approveModal = document.getElementById("approveModal");
+      var declineModal = document.getElementById("declineModal");
+      var confirmationModal = document.getElementById("confirmationModal");
+      var closeButtons = document.getElementsByClassName("close");
+
+      document.querySelectorAll('.btn-approve').forEach(button => {
+        button.addEventListener('click', function(event) {
+          event.preventDefault();
+          var rowIndex = parseInt(this.getAttribute('data-row'));
+          console.log("Approve button clicked, row index:", rowIndex);
+          approveModal.style.display = "block";
+
+          document.getElementById('confirmApprove').onclick = function() {
+            google.script.run.withSuccessHandler(function() {
+              approveModal.style.display = "none";
+              confirmationModal.style.display = "block";
+            }).updateLeaveStatus(rowIndex, "Approved");
+          };
+        });
+      });
+
+      document.querySelectorAll('.btn-disapprove').forEach(button => {
+        button.addEventListener('click', function(event) {
+          event.preventDefault();
+          var rowIndex = parseInt(this.getAttribute('data-row'));
+          console.log("Decline button clicked, row index:", rowIndex);
+          declineModal.style.display = "block";
+
+          document.getElementById('confirmDecline').onclick = function() {
+            var reason = document.getElementById('declineReason').value;
+            google.script.run.withSuccessHandler(function() {
+              declineModal.style.display = "none";
+              confirmationModal.style.display = "block";
+            }).updateLeaveStatus(rowIndex, "Declined");
+          };
+        });
+      });
+    
+
+      Array.from(closeButtons).forEach(element => {
+        element.onclick = function() {
+          approveModal.style.display = "none";
+          declineModal.style.display = "none";
+          confirmationModal.style.display = "none";
+          
+        }
+      });
+
+      window.onclick = function(event) {
+        if (event.target == approveModal) {
+          approveModal.style.display = "none";
+        } else if (event.target == declineModal) {
+          declineModal.style.display = "none";
+        } else if (event.target == confirmationModal) {
+          confirmationModal.style.display = "none";
+        }
+      };
+
+      document.getElementById('closeConfirmation').onclick = function() {
+        confirmationModal.style.display = "none";
+      };
+    });
+    
+    document.addEventListener('DOMContentLoaded', (event) => {
+      google.script.run.withSuccessHandler(loadLeaveData).getLeaveData();
+    });
+
+    function loadLeaveData(data) {
+      console.log(data); // Check the data being passed to the function
+      var tbody = document.getElementById('leaveTableBody');
+      data.forEach(function(row) {
+        var tr = document.createElement('tr');
+        row.forEach(function(cell) {
+          var td = document.createElement('td');
+          td.textContent = cell;
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+    }
+  </script>
+
+</body>
+
+</html>

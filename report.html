@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Report</title>
+  <?!= HtmlService.createHtmlOutputFromFile('report_css').getContent() ?>
+</head>
+
+<body>
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Include Chart.js -->
+  
+  <div class="container">
+    <div class="navigation">
+      {{NAVBAR}}
+    </div>
+    
+    <div class="main">
+      <div class="topbar">
+        <div class="toggle">
+          <ion-icon name="menu-outline"></ion-icon>
+        </div>
+      </div>
+
+      <div class="details">
+        <div class="cardHeader">
+          <h2>Reports</h2>
+        </div>
+        
+        <div class="filters">
+          <label for="reportType">Report Type:</label>
+          <select id="reportType">
+            <option value="employee_demographics">Employee Demographics</option>
+            <option value="departmental_headcount_turnover">Departmental Headcount and Turnover</option>
+          </select>
+          
+          <label for="department">Department:</label>
+          <select id="department">
+            <option value="all">All</option>
+          </select>
+          
+          <button class="btn" onclick="generateReport()">Generate Report</button>
+        </div>
+        
+        <div id="reportHeading" style="text-align: center; font-size: 1.5rem; margin: 20px 0;"></div>
+        
+        <div class="reportContent" id="reportContent">
+          <!-- Chart containers -->
+          <canvas id="genderChart" width="400" height="200"></canvas>
+          <canvas id="ageChart" width="400" height="200"></canvas>
+          <canvas id="nationalityChart" width="400" height="200"></canvas>
+          <canvas id="educationChart" width="400" height="200"></canvas>
+          <canvas id="turnoverChart" width="400" height="200"></canvas>
+        </div>
+        
+        <div class="exportOptions">
+          <button class="btn" onclick="exportToPDF()">Export to PDF</button>
+          <button class="btn" onclick="exportToCSV()">Export to CSV</button>
+          <button class="btn" onclick="window.print()">Print</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <?!= HtmlService.createHtmlOutputFromFile("js").getContent() ?>
+  <?!= HtmlService.createHtmlOutputFromFile("report_script").getContent() ?>
+
+</body>
+
+</html>

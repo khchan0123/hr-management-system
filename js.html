@@ -1,5 +1,5 @@
 <script>
-// add hovered class to selected list item
+  // add hovered class to selected list item
 let list = document.querySelectorAll(".navigation li");
 
 function activeLink() {
@@ -20,5 +20,61 @@ toggle.onclick = function () {
   navigation.classList.toggle("active");
   main.classList.toggle("active");
 };
+
+//<!-- import script -->//
+
+function importSheet() {
+    google.script.run.withSuccessHandler(onImportSuccess).importEmployees();
+  }
+
+// function onImportSuccess(result) {
+//     if (result.success) {
+//       alert("Employee data imported successfully!");
+//     } else {
+//       alert("Error importing employee data: " + result.message);
+//     }
+//   }
+
+document.addEventListener('DOMContentLoaded', function() {
+        var employeeModal = document.getElementById("employeeModal");
+        var addEmployeeBtn = document.getElementById("addEmployeeBtn");
+        var closeEmployeeModalBtn = document.getElementById("closeEmployeeModal");
+        
+        addEmployeeBtn.addEventListener('click', function() {
+          employeeModal.style.display = "block";
+        });
+
+        closeEmployeeModalBtn.addEventListener('click', function() {
+          employeeModal.style.display = "none";
+        });
+
+        window.onclick = function(event) {
+          if (event.target == employeeModal) {
+            employeeModal.style.display = "none";
+          }
+        };
+
+        document.getElementById('submitEmployeeForm').onclick = function() {
+          var formData = {
+            empId: document.getElementById('empId').value,
+            name: document.getElementById('name').value,
+            department: document.getElementById('department').value,
+            designation: document.getElementById('designation').value,
+            nric: document.getElementById('nric').value,
+            nationality: document.getElementById('nationality').value,
+            dob: document.getElementById('dob').value,
+            address: document.getElementById('address').value,
+            age: document.getElementById('age').value,
+            gender: document.getElementById('gender').value,
+            education: document.getElementById('education').value,
+            joiningDate: document.getElementById('joiningDate').value,
+            leavingDate: document.getElementById('leavingDate').value,
+            remarks: document.getElementById('remarks').value
+          };
+
+          google.script.run.addRecord(formData);
+          employeeModal.style.display = "none";
+        };
+      });
 
 </script>
