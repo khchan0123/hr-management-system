@@ -1,6 +1,6 @@
 # hr-management-system
-APU Google Hackathon Code Repository - TEAM SH
-Case study chosen: Human Resources
+APU Google Hackathon Code Repository - TEAM SH  
+Case study chosen: Human Resources  
 Developed using Apps Script + Google Workspace Add-Ons 
 
 Developers:
