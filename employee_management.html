@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>mainpage</title>
+  <?!= HtmlService.createHtmlOutputFromFile('emp_management_css').getContent() ?>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <!-- Popup Modal -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+  </script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
+    integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous">
+  </script>
+  <style>
+    body {
+      min-height: 100vh;
+    }
+
+    .container-fluid {
+      position: relative;
+      width: 100%;
+    }
+
+    .topbar {
+      width: 100%;
+      height: 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 10px;
+    }
+
+    .toggle {
+      position: relative;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2.5rem;
+      cursor: pointer;
+    }
+  </style>
+
+</head>
+
+<body onload="createDropdown()">
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="main">
+        <div class="topbar">
+          <div class="toggle">
+            <a href="#" id="back-link"><ion-icon name="arrow-back"></ion-icon></a>
+          </div>
+
+          <div class="add-btn" id="addEmployeeBtn">
+            <ion-icon name="add-circle-outline"></ion-icon>
+          </div>
+        </div>
+        <!-- The Modal Form -->
+        <div class="modal" id="myModal">
+          <div class="modal-dialog">
+            <div class="modal-content">
+
+              <!-- Modal Header -->
+              <div class="modal-header">
+                <h2>Employee Information</h2>
+                <button type="button" id="btn-close" class="close" data-dismiss="modal" onclick="clearForm();">&times;</button>
+              </div>
+
+              <!-- Modal body -->
+              <div class="modal-body">
+                <!-- See Form.html file -->
+                <?!= include('form'); ?>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- DataTable  -->
+        <div class="container-fluid">
+          <!-- See DataTable.html File -->
+          <?!= include('DataTable'); ?>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- New Employee Form Modal -->
+  <div id="employeeModal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="closeEmployeeModal">&times;</span>
+      <p>Add New Employee</p>
+      <form id="employeeForm">
+        <div class="form-group">
+          <label for="emp_id">EMP ID:</label>
+          <input type="text" id="emp_id" name="emp_id" required>
+        </div>
+        <div class="form-group">
+          <label for="emp_name">Name:</label>
+          <input type="text" id="emp_name" name="emp_name" required>
+        </div>
+        <div class="form-group">
+          <label for="emp_department">Department:</label>
+          <input type="text" id="emp_department" name="emp_department" required>
+        </div>
+        <div class="form-group">
+          <label for="emp_designation">Designation:</label>
+          <input type="text" id="emp_designation" name="emp_designation" required>
+        </div>
+        <div class="form-group">
+          <label for="emp_nric">NRIC:</label>
+          <input type="text" id="emp_nric" name="emp_nric" required>
+        </div>
+        <div class="form-group">
+          <label for="emp_nationality">Nationality:</label>
+          <input type="text" id="emp_nationality" name="emp_nationality" required>
+        </div>
+        <div class="form-group">
+          <label for="emp_dob">DOB:</label>
+          <input type="date" id="emp_dob" name="emp_dob" required>
+        </div>
+        <div class="form-group">
+          <label for="emp_address">Address:</label>
+          <input type="text" id="emp_address" name="emp_address" required>
+        </div>
+        <div class="form-group">
+          <label for="emp_age">Age:</label>
+          <input type="number" id="emp_age" name="emp_age" required>
+        </div>
+        <div class="form-group">
+          <label for="emp_gender">Gender:</label>
+          <input type="text" id="emp_gender" name="emp_gender" required>
+        </div>
+        <div class="form-group">
+          <label for="emp_education">Education Qualification:</label>
+          <input type="text" id="emp_education" name="emp_education" required>
+        </div>
+        <div class="form-group">
+          <label for="emp_joiningDate">Joining Date:</label>
+          <input type="date" id="emp_joiningDate" name="emp_joiningDate" required>
+        </div>
+        <div class="form-group">
+          <label for="emp_leavingDate">Leaving Date:</label>
+          <input type="date" id="emp_leavingDate" name="emp_leavingDate">
+        </div>
+        <div class="form-group">
+          <label for="emp_remarks">Remarks:</label>
+          <input type="text" id="emp_remarks" name="emp_remarks">
+        </div>
+        <button type="button" id="submitEmployeeForm">Submit</button>
+      </form>
+
+    </div>
+  </div>
+
+
+
+  <script>
+   document.addEventListener('DOMContentLoaded', function() {
+  var employeeModal = document.getElementById("employeeModal");
+  var addEmployeeBtn = document.getElementById("addEmployeeBtn");
+  var closeEmployeeModalBtn = document.getElementById("closeEmployeeModal");
+
+  addEmployeeBtn.addEventListener('click', function() {
+    employeeModal.style.display = "block";
+  });
+
+  closeEmployeeModalBtn.addEventListener('click', function() {
+    employeeModal.style.display = "none";
+  });
+
+  window.onclick = function(event) {
+    if (event.target == employeeModal) {
+      employeeModal.style.display = "none";
+    }
+  };
+
+  document.getElementById('submitEmployeeForm').onclick = function() {
+    var formData = {
+      empId: document.getElementById('emp_id').value,
+      name: document.getElementById('emp_name').value,
+      department: document.getElementById('emp_department').value,
+      designation: document.getElementById('emp_designation').value,
+      nric: document.getElementById('emp_nric').value,
+      nationality: document.getElementById('emp_nationality').value,
+      dob: document.getElementById('emp_dob').value,
+      address: document.getElementById('emp_address').value,
+      age: document.getElementById('emp_age').value,
+      gender: document.getElementById('emp_gender').value,
+      education: document.getElementById('emp_education').value,
+      joiningDate: document.getElementById('emp_joiningDate').value,
+      leavingDate: document.getElementById('emp_leavingDate').value,
+      remarks: document.getElementById('emp_remarks').value
+    };
+
+    console.log("Form Data: ", formData);
+
+    google.script.run.withSuccessHandler(function(response) {
+      console.log("Response from server: ", response);
+    }).addRecord(formData);
+
+    // Clear the form after submission
+    document.getElementById('employeeForm').reset();
+    document.getElementById("employeeModal").style.display = "none";
+  };
+});
+  document.getElementById('back-link').href = <?= getScriptURL()?>;
+
+
+  </script>
+</body>
+
+</html>

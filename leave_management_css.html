@@ -1,0 +1,201 @@
+<style>
+  .leave_table {
+    position: relative;
+    width: 150%;
+    padding-top: 20px;
+    padding-left: 20px;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-gap: 30px;
+    /* margin-top: 10px; */
+  }
+
+  .leave_table .recentOrders {
+    position: relative;
+    display: grid;
+    min-height: 500px;
+    background: var(--white);
+    padding: 20px;
+    box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+    border-radius: 20px;
+  }
+
+  .leave_table .recentOrders table,
+  .leave_table .recentCustomers table {
+    padding-top: 0;
+    margin-top: 0;
+    /* Adjust the margin as needed */
+  }
+
+  .cardHeader h2 {
+    font-weight: 600;
+    color: var(--blue);
+    margin: 0;
+    padding-left: 5px;
+    padding-top: 5px;
+
+  }
+
+  .cardHeader .btn {
+    position: relative;
+    padding: 5px 10px;
+    background: var(--blue);
+    text-decoration: none;
+    color: var(--white);
+    border-radius: 6px;
+  }
+
+  .leave_table table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+
+  .leave_table table thead td {
+    font-weight: 600;
+
+  }
+
+  .leave_table .recentOrders table tr {
+    color: var(--black1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .leave_table .recentOrders table tr:last-child {
+    border-bottom: none;
+  }
+
+  .leave_table .recentOrders table tr td {
+    font-size: 16px;
+    padding: 15px;
+  }
+
+  .leave_table .recentOrders table tr td:last-child {
+    text-align: center;
+  }
+
+  .leave_table .recentOrders table tr td:nth-child(2) {
+    text-align: center;
+  }
+
+  .leave_table .recentOrders table tr td:nth-child(3) {
+    text-align: start;
+  }
+
+  .leave_table .recentOrders table tr td:nth-child(6) {
+    text-align: center;
+  }
+
+  .leave_table .recentOrders table tr td:nth-child(8) {
+    text-align: center;
+  }
+
+  .leave_table .btn-approve,
+  .leave_table .btn-disapprove {
+    position: relative;
+    padding: 5px 5px;
+    margin: 4px;
+    text-decoration: none;
+    color: var(--white);
+    border-radius: 4px;
+    font-size: 14px;
+  }
+
+  .leave_table .btn-approve {
+    background: #8de02c;
+  }
+  
+  .leave_table .btn-disapprove {
+    background: #DC143C;
+  }
+
+
+  .status-pending {
+    color: #e9b10a;
+  }
+
+  .status-approved {
+    color: #8de02c;
+  }
+
+  .status-declined {
+    color: red;
+  }
+
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+    background-color: var(--white);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .modal-content {
+    position: relative;
+    padding: 10px;
+  }
+
+  .close {
+    color: #aaa;
+    font-weight: bold;
+  }
+
+  .btn-confirmation:hover,
+  .btn-confirmation:focus,
+  .btn-approve:hover,
+  .btn-approve:focus,
+  .btn-disapprove:hover,
+  .btn-disapprove:focus,
+  .btn-submit:hover,
+  .btn-approve:focus,
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+
+  .btn-yes,
+  .btn-approve {
+    background-color: #8de02c;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .btn-confirmation,
+  .btn-disapprove {
+    background-color: #dc143c;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .btn-submit {
+    background-color: #8de02c;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  #declineReason {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+</style>

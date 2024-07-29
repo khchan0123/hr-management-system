@@ -1,0 +1,27 @@
+<script>
+	/*
+  *THIS FUNCTION CALL THE getData() FUNCTION IN THE Code.gs FILE, 
+  *AND PASS RETURNED DATA TO showData() FUNCTION
+  */
+  google.script.run.withSuccessHandler(showData).getData();
+
+  //THIS FUNCTION GENERATE THE DATA TABLE FROM THE DATA ARRAY
+  function showData(dataArray){
+    $(document).ready(function(){
+      $('#data-table').DataTable({
+        data: dataArray,
+        //CHANGE THE TABLE HEADINGS BELOW TO MATCH WITH YOUR SELECTED DATA RANGE
+        columns: [
+          {"title":"Name"},
+          {"title":"Department"},
+          {"title":"Leave Type"},
+          {"title":"From Date"},
+          {"title":"To Date"},
+          {"title":"Leave Days"},
+          {"title":"Reason"},
+          {"title":"Status"}
+        ]
+      });
+    });
+  }
+</script>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+  <script>
+    // Function to link the webpage to a specific Google Spreadsheet
+    function linkToSpreadsheet() {
+      const spreadsheetId = '1qQFFj7iRi4AFJsOKc1xpKbrenitmPD4Evi-cvgmm3UA'; // Your spreadsheet ID
+      google.script.run.withSuccessHandler(onSpreadsheetLinkSuccess).linkToSpreadsheet(spreadsheetId);
+    }
+
+    function onSpreadsheetLinkSuccess(response) {
+      if (response.success) {
+        console.log('Spreadsheet linked successfully.');
+      } else {
+        console.error('Error linking spreadsheet: ' + response.message);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', linkToSpreadsheet);
+
+    function populateDepartments(departments) {
+      const departmentSelect = document.getElementById('department');
+      departments.forEach(department => {
+        const option = document.createElement('option');
+        option.value = department;
+        option.text = department;
+        departmentSelect.add(option);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      google.script.run.withSuccessHandler(populateDepartments).getDepartments();
+    });
+
+    let genderChartInstance;
+    let ageChartInstance;
+    let nationalityChartInstance;
+    let educationChartInstance;
+    let turnoverChartInstance;
+
+    function generateReport() {
+      const reportType = document.getElementById('reportType').value;
+      const department = document.getElementById('department').value;
+      
+      google.script.run.withSuccessHandler(function(data) {
+        displayReport(data, department, reportType);
+      }).generateReport(reportType, department);
+    }
+
+    function displayReport(data, department, reportType) { 
+      const departmentText = department === 'all' ? 'All Departments' : department;
+      document.getElementById('reportHeading').innerText = `${reportType === 'employee_demographics' ? 'Employee Demographics Report' : 'Departmental Headcount and Turnover Report'}: ${departmentText}`;
+
+      document.getElementById('genderChart').style.display = 'none';
+      document.getElementById('ageChart').style.display = 'none';
+      document.getElementById('nationalityChart').style.display = 'none';
+      document.getElementById('educationChart').style.display = 'none';
+      document.getElementById('turnoverChart').style.display = 'none';
+      document.getElementById('turnoverRate').style.display = 'none';
+
+      if (genderChartInstance) genderChartInstance.destroy();
+      if (ageChartInstance) ageChartInstance.destroy();
+      if (nationalityChartInstance) nationalityChartInstance.destroy();
+      if (educationChartInstance) educationChartInstance.destroy();
+      if (turnoverChartInstance) turnoverChartInstance.destroy();
+
+      const filterNullValues = (values) => values.map(value => value || 0);
+
+      if (reportType === 'employee_demographics') {
+        document.getElementById('genderChart').style.display = 'block';
+        document.getElementById('ageChart').style.display = 'block';
+        document.getElementById('nationalityChart').style.display = 'block';
+        document.getElementById('educationChart').style.display = 'block';
+
+        const genderCtx = document.getElementById('genderChart').getContext('2d');
+        genderChartInstance = new Chart(genderCtx, {
+          type: 'bar',
+          data: {
+            labels: data.gender.labels,
+            datasets: [{
+              label: 'Gender Distribution',
+              data: data.gender.values,
+              backgroundColor: 'rgba(54, 162, 235, 0.2)',
+              borderColor: 'rgba(54, 162, 235, 1)',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+
+        const ageCtx = document.getElementById('ageChart').getContext('2d');
+        ageChartInstance = new Chart(ageCtx, {
+          type: 'bar',
+          data: {
+            labels: data.age.labels,
+            datasets: [{
+              label: 'Age Distribution',
+              data: data.age.values,
+              backgroundColor: 'rgba(75, 192, 192, 0.2)',
+              borderColor: 'rgba(75, 192, 192, 1)',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+
+        const nationalityCtx = document.getElementById('nationalityChart').getContext('2d');
+        nationalityChartInstance = new Chart(nationalityCtx, {
+          type: 'bar',
+          data: {
+            labels: data.nationality.labels,
+            datasets: [{
+              label: 'Nationality Distribution',
+              data: data.nationality.values,
+              backgroundColor: 'rgba(255, 206, 86, 0.2)',
+              borderColor: 'rgba(255, 206, 86, 1)',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+
+        const educationCtx = document.getElementById('educationChart').getContext('2d');
+        educationChartInstance = new Chart(educationCtx, {
+          type: 'bar',
+          data: {
+            labels: data.education.labels,
+            datasets: [{
+              label: 'Education Qualification Distribution',
+              data: data.education.values,
+              backgroundColor: 'rgba(153, 102, 255, 0.2)',
+              borderColor: 'rgba(153, 102, 255, 1)',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+      } else if (reportType === 'departmental_headcount_turnover') {
+        document.getElementById('turnoverChart').style.display = 'block';
+        document.getElementById('turnoverRate').style.display = 'block';
+
+        const turnoverCtx = document.getElementById('turnoverChart').getContext('2d');
+        turnoverChartInstance = new Chart(turnoverCtx, {
+          type: 'pie',
+          data: {
+            labels: data.turnover.labels,
+            datasets: [{
+              data: data.turnover.values,
+              backgroundColor: ['rgba(54, 162, 235, 0.2)', 'rgba(255, 99, 132, 0.2)'],
+              borderColor: ['rgba(54, 162, 235, 1)', 'rgba(255, 99, 132, 1)'],
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'top'
+              }
+            }
+          }
+        });
+
+        document.getElementById('turnoverRate').innerText = `Turnover Rate: ${data.turnover.rate}% (${data.turnover.category})`;
+      }
+    }
+
+    function exportToPDF() {
+      const reportType = document.getElementById('reportType').value;
+      const department = document.getElementById('department').value;
+      const reportTitle = document.getElementById('reportHeading').innerText;
+
+      const confirmSave = confirm('Do you want to save this report as a PDF?');
+      if (!confirmSave) return;
+
+      const canvasList = [];
+      if (reportType === 'employee_demographics') {
+        canvasList.push(document.getElementById('genderChart'));
+        canvasList.push(document.getElementById('ageChart'));
+        canvasList.push(document.getElementById('nationalityChart'));
+        canvasList.push(document.getElementById('educationChart'));
+      } else if (reportType === 'departmental_headcount_turnover') {
+        canvasList.push(document.getElementById('turnoverChart'));
+      }
+
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      let yPosition = 10;
+
+      pdf.setFontSize(16);
+      pdf.text(reportTitle, 10, yPosition);
+      yPosition += 10;
+
+      canvasList.forEach(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const imgProps = pdf.getImageProperties(imgData);
+        const pdfWidth = pdf.internal.pageSize.getWidth() - 20;
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+        if (yPosition + pdfHeight > pdf.internal.pageSize.getHeight() - 10) {
+          pdf.addPage();
+          yPosition = 10;
+        }
+        pdf.addImage(imgData, 'PNG', 10, yPosition, pdfWidth, pdfHeight);
+        yPosition += pdfHeight + 10;
+      });
+
+      pdf.save(`${reportTitle}.pdf`);
+    }
+
+  </script>
+</head>
+<body>
+  <!-- This file handles backend JavaScript functions for the report.html -->
+</body>
+</html>
